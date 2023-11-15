@@ -7,7 +7,7 @@ import updateRouter from "./routes/updateRoute.js"
 import getRouter from "./tech_routes/getRoute.js";
 import createTechRouter from "./tech_routes/createRoute.js"
 import deleteTechRouter  from "./tech_routes/deleteRoute.js";
-
+import cors from "cors"
 connectMonngo()
 	.then(() => console.log("connected succefuly"))
 	.catch(err => console.log(err))
@@ -25,11 +25,18 @@ const app = express()
 
 app.use(bodyParser.urlencoded({extended: false }))
 app.use(bodyParser.json())
-
+app.use(cors())
 //routes
 
+app.get("/", (req,res)=>{
+	res.json({message: `welcome ${req.url} use any of the routes below`,
+		projects: "/projects",
+		techs: "/techs"
+	})
+})
+
 app.get("/projects",(req,res)=>{
-	console.log(req.url)
+
 	Project.find()
 		.then(data => res.json(data))
 })
